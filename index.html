@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>push swap visu</title>
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="stylesheet" href="styles.css" type="text/css" media="screen">
+    </head>
+    <body>
+        <div id="interface">
+            <div class="pad">
+                <h1 class="m-b">ps visu</h1>
+                <form name="form">
+                    <div class="m-b-2">
+                        <label for="listlen">stack length <span class="notes">(2 to 1000)</span> : </label>
+                        <input value="10" id="input-len" name="listlen" type="number" min="2" max="1000">
+                        <p class="notes">changing the length will reset the stacks</p>
+                    </div>
+                    <div class="m-b-2">
+                        <input id="input-reverse" value="reverse stack" type="button"><br>
+                        <input id="input-check" value="push swap" type="button">    
+                    </div>
+                    <div class="m-b-2 w-75">
+                        <p>speed : <span class="notes">± 1/1, 3/10, 25/1000</span></p>
+                        <div id="label-speed"><span>&#9668;</span><span class="align-right">&#9658;</span></div>
+                        <input id="input-speed" type="range" name="points" min="-3" max="3" step="1" value="1">
+                    </div>
+                    <div id="op-list" class="m-b-2">
+                        <p>operations : </p>
+                        <input id="pa" type="radio" name="op" value="pa" class="radio-op"><label class="label-op notes">pa</label>
+                        <input id="pb" type="radio" name="op" value="pb" class="radio-op"><label class="label-op notes">pb</label><br>
+                        <div class="field-separator"></div>
+                        <input id="sa" type="radio" name="op" value="sa" class="radio-op"><label class="label-op notes">sa</label>
+                        <input id="sb" type="radio" name="op" value="sb" class="radio-op"><label class="label-op notes">sb</label>
+                        <input id="ss" type="radio" name="op" value="ss" class="radio-op"><label class="label-op notes">ss</label><br>
+                        <div class="field-separator"></div>
+                        <input id="ra" type="radio" name="op" value="ra" class="radio-op"><label class="label-op notes">ra</label>
+                        <input id="rb" type="radio" name="op" value="rb" class="radio-op"><label class="label-op notes">rb</label>
+                        <input id="rr" type="radio" name="op" value="rr" class="radio-op"><label class="label-op notes">rr</label><br>
+                        <div class="field-separator"></div>
+                        <input id="rra" type="radio" name="op" value="rra" class="radio-op"><label class="label-op notes">rra</label>
+                        <input id="rrb" type="radio" name="op" value="rrb" class="radio-op"><label class="label-op notes">rrb</label>
+                        <input id="rrr" type="radio" name="op" value="rrr" class="radio-op"><label class="label-op notes">rrr</label><br>
+                    </div>
+	                <div class="m-b-2">
+                        <ul id="output-op">
+                        </ul>
+                        <p id="output-len">
+                            number of operations: <span id="len-result">0</span>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+	   <canvas id="canvas"></canvas>
+	   <div id="layout">
+		   <p>processing...</p>
+	   </div>
+	   <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	   <script type="text/javascript" src="client.js"></script>
+	</body>
+</html>

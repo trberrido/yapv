@@ -1,0 +1,16 @@
+{
+  "name": "push_swap_visu",
+  "version": "0.1.0",
+  "description": "a simple push swap viewer",
+  "main": "client.js",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app.js"
+  },
+  "author": "thberrid",
+  "license": "ISC"
+}
