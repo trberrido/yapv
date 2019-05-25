@@ -1,8 +1,10 @@
 # yapv
 yet another push swap visualisateur
 
-use port 8080
+listen port 8080
 
-#how to
+# usage
+the folder must be in the directory of push_swap
+
     npm install
     node server.js
