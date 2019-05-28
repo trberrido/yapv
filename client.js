@@ -1,10 +1,13 @@
-var gSpeed = 100;
+var gSpeed = 1000;
 var gStackA = [];
 var gStackB = [];
 var gStackASaved = [];
 var gOps = [];
 var gOpsDone = [];
 var gStackLenMax = 0;
+var gStackAmbitus = 0;
+var gStackMin = 0;
+var gStackMax = 0;
 var gClockHandler = function(){ setTimeout(clock, gSpeed) };
 
 function push(dst, src, stackId){
@@ -43,9 +46,14 @@ function rotate(stack, stackId){
 }
 
 function clock(){
-    const inputSpeed = document.getElementById("input-speed");
-
-    if (inputSpeed.value < 0)
+	const radioSpeed = document.getElementsByClassName("input-speed");
+    let i = 0;
+    while (i < radioSpeed.length){
+		if (radioSpeed[i].checked)
+			value = radioSpeed[i].value;
+        i += 1;
+    }
+    if (value < 0)
         processOpList(gOps, gOpsDone, "opsDone")         
     else
         processOpList(gOpsDone, gOps, "ops");
@@ -86,7 +94,7 @@ function processOpList(dst, src, opId){
 		if (gOpsDone.length){
 			currentOp.className = "op-selected";
 			var position = currentOp.offsetTop;
-			opList.scrollTop = position - (opList.offsetHeight * 3);
+			opList.scrollTop = position - (opList.offsetHeight * 3.5);
 		}
 	}
 }
@@ -108,7 +116,7 @@ function highligth(elements){
     }
 }
 
-function radioListen(){
+function radioOpListen(){
     const radios = document.form.op;
     let i = 0;
     while (i < radios.length){
@@ -166,6 +174,7 @@ function createList(len){
         gStackA[randIndex] = buf;
         i += 1;
 	}
+	setAmbitus(gStackA);
     gStackASaved = gStackA.slice();
 }
 
@@ -176,10 +185,13 @@ function printStack(id, stack, surface, canvas){
     if (id == 'B')
         shift = canvas.width / 2;
     if (len){
-        var height = canvas.height / gStackLenMax;
-        var steps = canvas.width / 2 / gStackLenMax;
+		var height = canvas.height / gStackLenMax;
+        var maxWidth = canvas.width / 2;
+       // var steps = canvas.width / 2 / gStackLenMax;
         while (i < len){
-            var width = (stack[i] + 1) * steps;
+         // 	var width = (stack[i] + 1) * steps;
+		 	var width = stack[i] - (gStackMin * 2);
+			width = width * maxWidth / gStackAmbitus;
             surface.fillStyle = "gold";
             surface.fillRect(0 + shift, i * height, width, height);
             i += 1;
@@ -206,9 +218,8 @@ function updateListLength(e){
     updateCanvas();
 }
 
-function updateSpeed(e){
+function updateSpeed(value){
     clearTimeout(gClockHandler);
-    var value = e.value;
     if (value < 0)
         value *= -1;
     if (value == 1)
@@ -243,20 +254,86 @@ function sortNumber(a, b){
 	return a - b;
 }
 
-document.addEventListener("DOMContentLoaded", function(){
+function ctrSpeedListen(){
+	const ctrSpeed = document.getElementsByClassName("ctr-speed");
+    let i = 0;
+    while (i < ctrSpeed.length){
+        ctrSpeed[i].addEventListener("click", function(e){
+            e.preventDefault();
+			var ctr = this.getAttribute("id");
+			var targetId = "radio-" + ctr.substring(ctr.lastIndexOf("-") + 1);
+			var target = document.getElementById(targetId)
+			target.checked = true;
+			updateSpeed(target.value);
+        });
+        i += 1;
+    }
+}
+
+function radioSpeedListen(){
+	const inputSpeed = document.getElementsByClassName("input-speed");
+    let i = 0;
+    while (i < inputSpeed.length){
+        inputSpeed[i].addEventListener("click", function(e){
+			updateSpeed(this.value);
+        });
+        i += 1;
+    }
+}
+
+function setAmbitus(array){
+	var max = -2147483648;
+	var min = 2147483647;
+	var len = array.length;
+	var i = 0;
+	while (i < len){
+		if (array[i] > max)
+			max = array[i];
+		if (array[i] < min)
+			min = array[i];
+		i += 1;
+	}
+	if (min == 0)
+		min = -1 * max / (array.length - 1);
+	gStackMin = min;
+	gStackMax = max;
+	gStackAmbitus = max - (min * 2);
+}
+
+function listenInterfaceEvents(){
+    const inputImport = document.getElementById("input-import");
+	inputImport.addEventListener("click", function(e){
+		var list = prompt("Enter a space separated integers suit", "1 59 48 -100");
+		list = list.split(" ");
+		/*check input */
+		var outputList = document.getElementById("output-op");
+		var result = document.getElementById("len-result");
+		result.textContent = "0";
+		while (outputList.firstChild) {
+    		outputList.removeChild(outputList.firstChild);
+		}
+		document.getElementById("input-reverse").disabled = false;
+    	document.getElementById("input-check").disabled = false;
+		gStackASaved = [];
+    	gStackA = list.slice();
+    	gStackASaved = gStackA.slice();
+		gStackB = [];
+		gOps = [];
+		gOpsDone = [];
+		gStackLenMax = gStackA.length;
+		setAmbitus(gStackA);
+    	updateCanvas();
+	});
     const inputLen = document.getElementById("input-len");
-    const inputCheck = document.getElementById("input-check");
-    const inputReverse = document.getElementById("input-reverse");
-	const inputSpeed = document.getElementById("input-speed");
-	setCanvasDimensions();
-	updateSpeed(inputSpeed);
-    inputSpeed.addEventListener("change", function(){updateSpeed(inputSpeed)});
-    radioListen();
-    createList(inputLen.value);
-    updateCanvas();
     inputLen.addEventListener("change", updateListLength, false);
     inputLen.addEventListener("click", updateListLength, false);
-    var socket = io('http://localhost:8080');
+    createList(inputLen.value);
+	setCanvasDimensions();
+    updateCanvas();
+	ctrSpeedListen();
+	radioSpeedListen();
+    radioOpListen();
+    const inputReverse = document.getElementById("input-reverse");
     inputReverse.addEventListener("click", function(){
 		gStackA = gStackASaved.slice();
 		gStackB = [];
@@ -264,6 +341,17 @@ document.addEventListener("DOMContentLoaded", function(){
 		gStackA.reverse();
 		updateCanvas();
 	});
+	window.addEventListener('resize', function(){
+		setCanvasDimensions();
+		updateCanvas();
+	}, true);
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+	listenInterfaceEvents();
+	clock();
+    var socket = io('http://localhost:8080');
+    const inputCheck = document.getElementById("input-check");
     inputCheck.addEventListener("click", function(){
 		socket.emit("run", gStackA);
 		document.getElementById("input-check").disabled = true;
@@ -271,7 +359,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		document.getElementById("layout").style.display = 'block';
     });
     socket.on("message", function(data){
-        alert(data);    
+        alert(data); 
     });
     var target = document.getElementById("output-op");
     socket.on("newop", function(data){
@@ -279,8 +367,4 @@ document.addEventListener("DOMContentLoaded", function(){
         gOps.push(data);
         addOutputList(data, target);
 	});
-	window.addEventListener('resize', function(){
-		setCanvasDimensions();
-		updateCanvas();
-	}, true);
 });

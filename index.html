@@ -11,19 +11,43 @@
             <div class="pad">
                 <h1 class="m-b">ps visu</h1>
                 <form name="form">
-                    <div class="m-b-2">
+                    <div class="m-b-1">
                         <label for="listlen">stack length <span class="notes">(2 to 1000)</span> : </label>
+						<p class="notes">changing the length will reset the stacks</p>
                         <input value="10" id="input-len" name="listlen" type="number" min="2" max="1000">
-                        <p class="notes">changing the length will reset the stacks</p>
                     </div>
-                    <div class="m-b-2">
+                    <div class="m-b-3">
+						<p class="notes">or you can import a set of values</p>
+                        <input id="input-import" value="import stack" type="button"><br>
+                    </div>
+                    <div class="m-b-3">
                         <input id="input-reverse" value="reverse stack" type="button"><br>
                         <input id="input-check" value="push swap" type="button">    
                     </div>
-                    <div class="m-b-2 w-75">
-                        <p>speed : <span class="notes">± 1/1, 3/10, 25/1000</span></p>
-                        <div id="label-speed"><span>&#9668;</span><span class="align-right">&#9658;</span></div>
-                        <input id="input-speed" type="range" name="points" min="-3" max="3" step="1" value="1">
+                    <div class="m-b-5 w-75">
+                        <p>control speed : </p>
+						<div id="ico-speed"><button id="input-rewind" class="ico-direction ctr-speed">&#9668;&#9668;</button><span id="ico-pause"><button id="input-pause" class="ctr-speed">&#10074;&#10074;</button></span><button id="input-forward" class="align-right ico-direction ctr-speed"><span style="font-size:.8em">&#9658;&#9658;</span></button></div>
+						<div class="ctr-speed-container">
+							<input id="radio-rewind" type="radio" name="speed" value="-3" class="input-speed"><label class="label-speed notes">&#215;-3</label>
+                    	</div>
+						<div class="ctr-speed-container">
+                    	    <input type="radio" name="speed" value="-2" class="input-speed"><label class="label-speed notes">&#215;-2</label>
+                    	</div>
+						<div class="ctr-speed-container">
+                    	    <input type="radio" name="speed" value="-1" class="input-speed"><label class="label-speed notes">&#215;-1</label>
+                    	</div>
+						<div class="ctr-speed-container">
+                    	    <input id="radio-pause" type="radio" name="speed" value="0" class="input-speed"><label class="label-speed notes">0</label>
+                   		</div>
+						<div class="ctr-speed-container">
+                        	<input type="radio" name="speed" value="1" class="input-speed" checked><label class="label-speed notes">&#215;1</label>
+                    	</div>
+						<div class="ctr-speed-container">
+                    	    <input type="radio" name="speed" value="2" class="input-speed"><label class="label-speed notes">&#215;2</label>
+                    	</div>
+						<div class="ctr-speed-container">
+                        	<input id="radio-forward" type="radio" name="speed" value="3" class="input-speed"><label class="label-speed notes">&#215;3</label>
+                    	</div>
                     </div>
                     <div id="op-list" class="m-b-2">
                         <p>operations : </p>
