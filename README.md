@@ -2,7 +2,7 @@
 yet another push swap visualisateur
 
 # usage
-the folder must be in the directory of push_swap
+the folder yapv/ must be in the directory of push_swap/
 
     npm install
     node server.js
