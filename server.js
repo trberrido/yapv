@@ -38,15 +38,17 @@ server.on("request", function(req, res){
 });
 
 const io = require("socket.io").listen(server);
+io.origins('*:*');
 
 const { exec } = require("child_process");
 
 io.sockets.on("connection", function (client){
 	console.log("conn");
 	client.on("run", function (data){
-		console.log("client call " + data);
-		const child = exec("../push_swap " + data.join(" "), (err, stdout, stderr) => {
+		console.log("client call " + data.join(' '));
+		const child = exec("push_swap/push_swap " + data.join(" "), (err, stdout, stderr) => {
 			if (err) {
+				console.log(err)
 				client.emit("message", "An error occured with push_swap");
 			} else {
 				console.log(stderr);

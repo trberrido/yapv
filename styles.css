@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
 }
-input { min-width: 10em; }
+/*input { min-width: 10em; } */
 h1 { margin: 0; }
 
 .align-right { float: right; }
@@ -19,7 +19,7 @@ h1 { margin: 0; }
 
 #interface {
     background-color: rgba(255,255,255,0.5);
-    width: 21em;
+    width: 25em;
     z-index:1;
     display: inline-block;
 }
@@ -49,6 +49,7 @@ h1 { margin: 0; }
 #ico-speed {
 	position: relative;
 	width: 93%;
+	margin-bottom: 1rem;
 }
 
 #input-forward {
@@ -107,6 +108,7 @@ h1 { margin: 0; }
 #canvas {
     background-color: rgb(230,230,230);
     float: right;
+	position: fixed;
 }
 
 #layout {

@@ -187,11 +187,12 @@ function printStack(id, stack, surface, canvas){
     if (len){
 		var height = canvas.height / gStackLenMax;
         var maxWidth = canvas.width / 2;
-       // var steps = canvas.width / 2 / gStackLenMax;
+        var steps = canvas.width / 2 / gStackLenMax;
         while (i < len){
-         // 	var width = (stack[i] + 1) * steps;
-		 	var width = stack[i] - (gStackMin * 2);
-			width = width * maxWidth / gStackAmbitus;
+          	var width = (stack[i] + 1) * steps;
+			console.log(gStackMin)
+		 //	var width = stack[i] - (gStackMin * 2);
+		//	width = width * maxWidth / gStackAmbitus;
             surface.fillStyle = "gold";
             surface.fillRect(0 + shift, i * height, width, height);
             i += 1;
