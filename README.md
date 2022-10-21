@@ -1,12 +1,17 @@
 # yapv
-yet another push swap visualisateur
+A viewer for [push_swap](https://github.com/thberrid/push_swap), a sorting stacks program.
+
+[Preview](http://pushswap.dafox.co)
 
 # usage
-the folder yapv/ must be in the directory of push_swap/
 
     npm install
     node server.js
 
-listen port 8080
+Apache  configuration
 
-[preview](http://pushswap.machine.ovh)
+	ProxyRequests Off
+	ProxyPass / http://localhost:8080/
+	ProxyPassReverse / http://localhost:8080/
+
+
